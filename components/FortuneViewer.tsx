@@ -139,6 +139,11 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
 
             {/* 메인 컨텐츠 */}
             <div className="fortune-content">
+                {/* SEO 제목 표시 */}
+                <div className="fortune-title">
+                    <h1>{title}</h1>
+                </div>
+
                 {/* 년생 텍스트 영역 - 깔끔한 하얀색, 움직이지 않음 */}
                 <div className="birth-years-container">
                     {birthYears.map((year, index) => (

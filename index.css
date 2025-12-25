@@ -151,7 +151,30 @@ body {
     display: flex;
     flex-direction: column;
     padding: 20px;
-    justify-content: space-between;
+    justify-content: flex-start;
+}
+
+/* ========================================
+   Fortune Title - SEO 제목 표시
+   ======================================== */
+.fortune-title {
+    text-align: center;
+    margin-bottom: 25px;
+    padding: 15px 20px;
+}
+
+.fortune-title h1 {
+    font-size: 22px;
+    font-weight: 900;
+    color: #FFFFFF;
+    line-height: 1.4;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+/* 제목 중 강조 부분 (선택사항) */
+.fortune-title .highlight {
+    color: #FF4444;
+    background: linear-gradient(180deg, transparent 60%, rgba(255, 68, 68, 0.3) 60%);
 }
 
 /* ========================================
