@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;700;900&display=swap');
+
 * {
     margin: 0;
     padding: 0;
@@ -45,7 +47,7 @@ body {
     overflow: hidden;
 }
 
-/* Stars - 잔잔하게 움직이는 별 */
+/* Stars - 잔잔하게 움직이는 별 (배경만) */
 .stars,
 .stars2,
 .stars3 {
@@ -87,7 +89,7 @@ body {
     }
 }
 
-/* Nebula Effect - 부드러운 성운 */
+/* Nebula Effect */
 .nebula {
     position: absolute;
     top: 0;
@@ -164,6 +166,7 @@ body {
 }
 
 .fortune-title h1 {
+    font-family: 'Noto Serif KR', serif;
     font-size: 22px;
     font-weight: 900;
     color: #FFFFFF;
@@ -171,88 +174,72 @@ body {
     text-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
 }
 
-/* 제목 중 강조 부분 (선택사항) */
-.fortune-title .highlight {
-    color: #FF4444;
-    background: linear-gradient(180deg, transparent 60%, rgba(255, 68, 68, 0.3) 60%);
-}
-
 /* ========================================
-   Birth Years Container - 깔끔한 하얀색, 정적
+   Birth Years Container - 휴먼명조 스타일, 정적
    ======================================== */
 .birth-years-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 12px 20px;
-    padding: 30px 15px;
+    gap: 10px 18px;
+    padding: 20px 10px;
     flex: 1;
     align-content: flex-start;
 }
 
-/* 년생 텍스트 - 60대 타겟, 깔끔하고 읽기 쉽게 */
+/* 년생 텍스트 - 60대 타겟, 휴먼명조 스타일, 깔끔한 하얀색, 정적 (애니메이션 없음!) */
 .birth-year-text {
     display: inline-block;
-    font-size: 20px;
+    font-family: 'Noto Serif KR', serif;
+    font-size: 18px;
     font-weight: 700;
     color: #FFFFFF;
-    letter-spacing: 1px;
-    /* 움직이지 않음 - 정적 텍스트 */
+    letter-spacing: 0.5px;
+    /* 절대 애니메이션 없음 - 정적 텍스트 */
+    animation: none !important;
+    transform: none !important;
+    transition: none !important;
 }
 
 /* ========================================
-   Toad Container - 고급스러운 금두꺼비
+   Pig Container - 복돼지 (하단에 작게)
    ======================================== */
-.toad-container {
+.pig-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-    padding-bottom: 20px;
+    gap: 8px;
+    padding: 15px 0;
     position: relative;
+    margin-top: auto;
 }
 
-.toad-circle {
-    position: relative;
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    background: linear-gradient(145deg, #2a2a3a 0%, #1a1a2e 100%);
+.pig-wrapper {
+    width: 50px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow:
-        0 0 30px rgba(255, 215, 0, 0.3),
-        0 0 60px rgba(255, 165, 0, 0.15),
-        inset 0 0 20px rgba(255, 215, 0, 0.1);
-    border: 2px solid rgba(255, 215, 0, 0.3);
-    overflow: hidden;
+    transition: transform 0.2s ease;
 }
 
-.toad-circle:hover {
-    transform: scale(1.08);
-    box-shadow:
-        0 0 40px rgba(255, 215, 0, 0.5),
-        0 0 80px rgba(255, 165, 0, 0.3);
+.pig-wrapper:hover {
+    transform: scale(1.1);
 }
 
-.toad-circle:active {
+.pig-wrapper:active {
     transform: scale(0.95);
 }
 
-.toad-image {
-    width: 90%;
-    height: 90%;
-    object-fit: cover;
-    border-radius: 50%;
-    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+.pig-emoji {
+    font-size: 36px;
+    filter: drop-shadow(0 2px 5px rgba(0, 0, 0, 0.3));
 }
 
-.toad-hint {
-    font-size: 14px;
-    color: rgba(255, 215, 0, 0.9);
+.pig-hint {
+    font-size: 12px;
+    color: rgba(255, 182, 193, 0.9);
     font-weight: bold;
     letter-spacing: 1px;
 }
@@ -262,30 +249,30 @@ body {
    ======================================== */
 .blessing-popup {
     position: absolute;
-    bottom: 130px;
+    bottom: 90px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, #FFD700, #FFA500);
     color: #000;
-    padding: 20px 30px;
+    padding: 15px 25px;
     border-radius: 20px;
     font-weight: bold;
     text-align: center;
     animation: popupBounce 0.5s ease-out;
     box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
     z-index: 100;
-    min-width: 200px;
+    min-width: 180px;
 }
 
 .blessing-main {
     display: block;
-    font-size: 18px;
+    font-size: 16px;
     margin-bottom: 5px;
 }
 
 .blessing-sub {
     display: block;
-    font-size: 14px;
+    font-size: 12px;
     color: rgba(0, 0, 0, 0.7);
 }
 

@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import toadImage from '../assets/golden-toad.png';
 
 interface FortuneViewerProps {
     script: string;
@@ -8,27 +7,41 @@ interface FortuneViewerProps {
 }
 
 const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose }) => {
-    const [toadDirection, setToadDirection] = useState<'left' | 'right'>('left');
+    const [pigDirection, setPigDirection] = useState<'left' | 'right'>('left');
     const [showBlessing, setShowBlessing] = useState(false);
     const [blessingCount, setBlessingCount] = useState(0);
     const [isPlaying, setIsPlaying] = useState(false);
     const [birthYears, setBirthYears] = useState<string[]>([]);
     const containerRef = useRef<HTMLDivElement>(null);
 
-    // 금두꺼비 방향 랜덤 설정
+    // 복돼지 방향 랜덤 설정
     useEffect(() => {
-        setToadDirection(Math.random() > 0.5 ? 'left' : 'right');
+        setPigDirection(Math.random() > 0.5 ? 'left' : 'right');
     }, []);
 
-    // 대본에서 년생 추출
+    // 대본에서 년생 추출 및 나이순 정렬 (오래된 년도 먼저)
     useEffect(() => {
         const yearPattern = /(\d{2,4})년생/g;
         const matches = script.match(yearPattern) || [];
-        setBirthYears([...new Set(matches)]);
+        const uniqueYears = [...new Set(matches)];
+
+        // 나이순 정렬: 오래된 년도(작은 숫자)가 먼저 오도록
+        const sortedYears = uniqueYears.sort((a, b) => {
+            const yearA = parseInt(a.replace('년생', ''));
+            const yearB = parseInt(b.replace('년생', ''));
+
+            // 2자리 년도를 4자리로 변환 (00-30: 2000년대, 31-99: 1900년대)
+            const fullYearA = yearA < 100 ? (yearA <= 30 ? 2000 + yearA : 1900 + yearA) : yearA;
+            const fullYearB = yearB < 100 ? (yearB <= 30 ? 2000 + yearB : 1900 + yearB) : yearB;
+
+            return fullYearA - fullYearB; // 오름차순 (오래된 년도가 먼저)
+        });
+
+        setBirthYears(sortedYears);
     }, [script]);
 
-    // 금두꺼비 더블클릭 핸들러
-    const handleToadDoubleClick = () => {
+    // 복돼지 더블클릭 핸들러
+    const handlePigDoubleClick = () => {
         setBlessingCount(prev => prev + 1);
         setShowBlessing(true);
 
@@ -37,15 +50,15 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
             (window as any).confetti({
                 particleCount: 100,
                 spread: 70,
-                origin: { y: 0.8, x: 0.5 },
-                colors: ['#FFD700', '#FFA500', '#FF6347', '#FFFF00']
+                origin: { y: 0.85, x: 0.5 },
+                colors: ['#FFD700', '#FFA500', '#FF69B4', '#FFFF00']
             });
         }
 
         setTimeout(() => setShowBlessing(false), 2500);
     };
 
-    // TTS 재생 - 제목 + 금두꺼비 안내만
+    // TTS 재생 - 제목 + 복돼지 안내만
     const handlePlayTTS = () => {
         if (isPlaying) {
             window.speechSynthesis.cancel();
@@ -55,8 +68,8 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
 
         setIsPlaying(true);
 
-        // 제목 + 금두꺼비 안내 멘트만 읽기
-        const ttsText = `${title}. 화면 하단의 금두꺼비를 두 번 누르시면 복이 찾아옵니다.`;
+        // 제목 + 복돼지 안내 멘트만 읽기
+        const ttsText = `${title}. 화면 하단의 복돼지를 두 번 누르시면 복이 찾아옵니다.`;
         const utterance = new SpeechSynthesisUtterance(ttsText);
 
         // 한국어 여성 목소리 찾기
@@ -71,12 +84,11 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
         }
 
         utterance.lang = 'ko-KR';
-        utterance.rate = 0.9; // 천천히
-        utterance.pitch = 0.85; // 중저음
+        utterance.rate = 0.9;
+        utterance.pitch = 0.85;
 
         utterance.onend = () => {
             setIsPlaying(false);
-            // 멘트 끝나면 돈 폭죽!
             triggerMoneyConfetti();
         };
 
@@ -92,7 +104,6 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
         if (typeof window !== 'undefined' && (window as any).confetti) {
             const confetti = (window as any).confetti;
 
-            // 여러 번 발사
             const duration = 3000;
             const animationEnd = Date.now() + duration;
 
@@ -144,7 +155,7 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
                     <h1>{title}</h1>
                 </div>
 
-                {/* 년생 텍스트 영역 - 깔끔한 하얀색, 움직이지 않음 */}
+                {/* 년생 텍스트 영역 - 깔끔한 하얀색, 휴먼명조 스타일, 정적 */}
                 <div className="birth-years-container">
                     {birthYears.map((year, index) => (
                         <span key={index} className="birth-year-text">
@@ -153,20 +164,20 @@ const FortuneViewer: React.FC<FortuneViewerProps> = ({ script, title, onClose })
                     ))}
                 </div>
 
-                {/* 금두꺼비 - 고급스러운 이미지 */}
+                {/* 복돼지 - 하단에 작게 */}
                 <div
-                    className={`toad-container ${toadDirection}`}
-                    onDoubleClick={handleToadDoubleClick}
+                    className="pig-container"
+                    onDoubleClick={handlePigDoubleClick}
                 >
-                    <div className="toad-circle">
-                        <img
-                            src={toadImage}
-                            alt="금두꺼비"
-                            className="toad-image"
-                            style={{ transform: toadDirection === 'right' ? 'scaleX(-1)' : 'none' }}
-                        />
+                    <div className="pig-wrapper">
+                        <span
+                            className="pig-emoji"
+                            style={{ transform: pigDirection === 'right' ? 'scaleX(-1)' : 'none' }}
+                        >
+                            🐷
+                        </span>
                     </div>
-                    <span className="toad-hint">두 번 누르세요!</span>
+                    <span className="pig-hint">두 번 누르세요!</span>
 
                     {/* 축복 메시지 */}
                     {showBlessing && (
