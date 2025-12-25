@@ -45,7 +45,7 @@ body {
     overflow: hidden;
 }
 
-/* Stars */
+/* Stars - 잔잔하게 움직이는 별 */
 .stars,
 .stars2,
 .stars3 {
@@ -55,26 +55,26 @@ body {
     right: 0;
     bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 200%;
     display: block;
 }
 
 .stars {
     background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="1" fill="white"/></svg>') repeat;
     background-size: 50px 50px;
-    animation: animateStars 150s linear infinite;
+    animation: animateStars 200s linear infinite;
 }
 
 .stars2 {
     background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="30" cy="70" r="0.8" fill="rgba(255,255,255,0.8)"/></svg>') repeat;
     background-size: 80px 80px;
-    animation: animateStars 100s linear infinite;
+    animation: animateStars 150s linear infinite;
 }
 
 .stars3 {
     background: transparent url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="70" cy="30" r="0.5" fill="rgba(255,255,255,0.6)"/></svg>') repeat;
     background-size: 120px 120px;
-    animation: animateStars 200s linear infinite;
+    animation: animateStars 300s linear infinite;
 }
 
 @keyframes animateStars {
@@ -83,11 +83,11 @@ body {
     }
 
     100% {
-        transform: translateY(-1000px);
+        transform: translateY(-50%);
     }
 }
 
-/* Nebula Effect */
+/* Nebula Effect - 부드러운 성운 */
 .nebula {
     position: absolute;
     top: 0;
@@ -95,26 +95,21 @@ body {
     right: 0;
     bottom: 0;
     background:
-        radial-gradient(ellipse at 20% 80%, rgba(138, 43, 226, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 80% 20%, rgba(65, 105, 225, 0.15) 0%, transparent 50%),
-        radial-gradient(ellipse at 50% 50%, rgba(255, 215, 0, 0.05) 0%, transparent 60%);
-    animation: nebulaFloat 20s ease-in-out infinite alternate;
+        radial-gradient(ellipse at 20% 80%, rgba(138, 43, 226, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(65, 105, 225, 0.12) 0%, transparent 50%),
+        radial-gradient(ellipse at 50% 50%, rgba(255, 215, 0, 0.03) 0%, transparent 60%);
+    animation: nebulaFloat 30s ease-in-out infinite alternate;
 }
 
 @keyframes nebulaFloat {
     0% {
-        transform: scale(1) rotate(0deg);
-        opacity: 0.8;
-    }
-
-    50% {
-        transform: scale(1.1) rotate(2deg);
-        opacity: 1;
+        transform: scale(1);
+        opacity: 0.7;
     }
 
     100% {
-        transform: scale(1) rotate(-2deg);
-        opacity: 0.8;
+        transform: scale(1.05);
+        opacity: 0.9;
     }
 }
 
@@ -135,7 +130,7 @@ body {
     color: #fff;
     padding: 10px 20px;
     border-radius: 25px;
-    font-size: 12px;
+    font-size: 14px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -144,7 +139,6 @@ body {
 
 .close-btn:hover {
     background: rgba(255, 255, 255, 0.2);
-    transform: scale(1.05);
 }
 
 /* ========================================
@@ -157,220 +151,119 @@ body {
     display: flex;
     flex-direction: column;
     padding: 20px;
-}
-
-.fortune-title-hint {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.hint-text {
-    font-size: 11px;
-    color: rgba(255, 255, 255, 0.4);
-    letter-spacing: 2px;
+    justify-content: space-between;
 }
 
 /* ========================================
-   Birth Years Container
+   Birth Years Container - 깔끔한 하얀색, 정적
    ======================================== */
 .birth-years-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 8px 12px;
-    padding: 20px 10px;
-    margin-bottom: 20px;
+    gap: 12px 20px;
+    padding: 30px 15px;
     flex: 1;
     align-content: flex-start;
 }
 
+/* 년생 텍스트 - 60대 타겟, 깔끔하고 읽기 쉽게 */
 .birth-year-text {
     display: inline-block;
-    font-size: 18px;
-    font-weight: bold;
-    color: #fff;
-    text-shadow:
-        0 0 10px rgba(255, 215, 0, 0.8),
-        0 0 20px rgba(255, 215, 0, 0.5),
-        0 0 30px rgba(255, 215, 0, 0.3);
-    animation: floatText 3s ease-in-out infinite;
-    animation-delay: var(--delay, 0s);
-}
-
-.birth-year-text:nth-child(3n) {
-    color: #FFD700;
-}
-
-.birth-year-text:nth-child(3n+1) {
-    color: #FFA500;
-}
-
-.birth-year-text:nth-child(3n+2) {
-    color: #FFFACD;
-}
-
-@keyframes floatText {
-
-    0%,
-    100% {
-        transform: translate(var(--random-x, 0), var(--random-y, 0));
-    }
-
-    50% {
-        transform: translate(calc(var(--random-x, 0) * -1), calc(var(--random-y, 0) * -1));
-    }
+    font-size: 20px;
+    font-weight: 700;
+    color: #FFFFFF;
+    letter-spacing: 1px;
+    /* 움직이지 않음 - 정적 텍스트 */
 }
 
 /* ========================================
-   Script Preview
-   ======================================== */
-.script-preview {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 15px;
-    padding: 15px;
-    margin-bottom: 20px;
-    backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.script-preview p {
-    font-size: 13px;
-    color: rgba(255, 255, 255, 0.7);
-    line-height: 1.6;
-    text-align: center;
-}
-
-/* ========================================
-   Toad Container
+   Toad Container - 고급스러운 금두꺼비
    ======================================== */
 .toad-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 10px;
-    margin-top: auto;
+    gap: 12px;
     padding-bottom: 20px;
+    position: relative;
 }
 
 .toad-circle {
     position: relative;
-    width: 80px;
-    height: 80px;
+    width: 100px;
+    height: 100px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+    background: linear-gradient(145deg, #2a2a3a 0%, #1a1a2e 100%);
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
     transition: all 0.3s ease;
     box-shadow:
-        0 0 20px rgba(255, 215, 0, 0.5),
-        0 0 40px rgba(255, 165, 0, 0.3),
-        inset 0 -5px 15px rgba(0, 0, 0, 0.2);
-    animation: toadPulse 2s ease-in-out infinite;
+        0 0 30px rgba(255, 215, 0, 0.3),
+        0 0 60px rgba(255, 165, 0, 0.15),
+        inset 0 0 20px rgba(255, 215, 0, 0.1);
+    border: 2px solid rgba(255, 215, 0, 0.3);
+    overflow: hidden;
 }
 
 .toad-circle:hover {
-    transform: scale(1.1);
+    transform: scale(1.08);
     box-shadow:
-        0 0 30px rgba(255, 215, 0, 0.7),
-        0 0 60px rgba(255, 165, 0, 0.5);
+        0 0 40px rgba(255, 215, 0, 0.5),
+        0 0 80px rgba(255, 165, 0, 0.3);
 }
 
 .toad-circle:active {
     transform: scale(0.95);
 }
 
-@keyframes toadPulse {
-
-    0%,
-    100% {
-        box-shadow:
-            0 0 20px rgba(255, 215, 0, 0.5),
-            0 0 40px rgba(255, 165, 0, 0.3);
-    }
-
-    50% {
-        box-shadow:
-            0 0 30px rgba(255, 215, 0, 0.7),
-            0 0 60px rgba(255, 165, 0, 0.5);
-    }
-}
-
-.toad-emoji {
-    font-size: 40px;
-    filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
-    transition: transform 0.3s ease;
-}
-
-.toad-glow {
-    position: absolute;
-    top: -10px;
-    left: -10px;
-    right: -10px;
-    bottom: -10px;
+.toad-image {
+    width: 90%;
+    height: 90%;
+    object-fit: cover;
     border-radius: 50%;
-    background: radial-gradient(circle, rgba(255, 215, 0, 0.3) 0%, transparent 70%);
-    animation: glowPulse 2s ease-in-out infinite alternate;
-    pointer-events: none;
-}
-
-@keyframes glowPulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.5;
-    }
-
-    100% {
-        transform: scale(1.2);
-        opacity: 0.8;
-    }
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
 }
 
 .toad-hint {
-    font-size: 11px;
-    color: rgba(255, 215, 0, 0.8);
+    font-size: 14px;
+    color: rgba(255, 215, 0, 0.9);
     font-weight: bold;
-    animation: hintBlink 1.5s ease-in-out infinite;
-}
-
-@keyframes hintBlink {
-
-    0%,
-    100% {
-        opacity: 0.5;
-    }
-
-    50% {
-        opacity: 1;
-    }
+    letter-spacing: 1px;
 }
 
 /* ========================================
-   Blessing Popup
+   Blessing Popup - 축복 메시지
    ======================================== */
 .blessing-popup {
     position: absolute;
-    bottom: 100px;
+    bottom: 130px;
     left: 50%;
     transform: translateX(-50%);
     background: linear-gradient(135deg, #FFD700, #FFA500);
     color: #000;
-    padding: 15px 25px;
-    border-radius: 50px;
+    padding: 20px 30px;
+    border-radius: 20px;
     font-weight: bold;
-    font-size: 16px;
     text-align: center;
     animation: popupBounce 0.5s ease-out;
-    box-shadow: 0 10px 30px rgba(255, 215, 0, 0.5);
+    box-shadow: 0 10px 40px rgba(255, 215, 0, 0.5);
     z-index: 100;
+    min-width: 200px;
 }
 
-.blessing-popup .blessing-count {
+.blessing-main {
     display: block;
-    font-size: 11px;
-    margin-top: 5px;
-    color: rgba(0, 0, 0, 0.6);
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.blessing-sub {
+    display: block;
+    font-size: 14px;
+    color: rgba(0, 0, 0, 0.7);
 }
 
 @keyframes popupBounce {
@@ -380,7 +273,7 @@ body {
     }
 
     50% {
-        transform: translateX(-50%) scale(1.2) translateY(-10px);
+        transform: translateX(-50%) scale(1.1) translateY(-10px);
     }
 
     100% {
@@ -404,17 +297,17 @@ body {
 .tts-button,
 .confetti-button {
     flex: 1;
-    padding: 15px 20px;
+    padding: 18px 20px;
     border: none;
     border-radius: 15px;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: bold;
     cursor: pointer;
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
 }
 
 .tts-button {
@@ -424,7 +317,7 @@ body {
 
 .tts-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(102, 126, 234, 0.4);
+    box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
 }
 
 .tts-button.playing {
@@ -451,11 +344,11 @@ body {
 
 .confetti-button:hover {
     transform: translateY(-2px);
-    box-shadow: 0 10px 20px rgba(255, 215, 0, 0.4);
+    box-shadow: 0 10px 25px rgba(255, 215, 0, 0.4);
 }
 
 /* ========================================
-   Glass Panel (from previous styles)
+   Glass Panel
    ======================================== */
 .glass-panel {
     background: rgba(30, 41, 59, 0.7);
@@ -500,7 +393,7 @@ body {
    Custom Scrollbar
    ======================================== */
 .custom-scrollbar::-webkit-scrollbar {
-    width: 10px;
+    width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
@@ -514,5 +407,5 @@ body {
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-    background: rgba(234, 179, 8, 0.8);
+    background: rgba(234, 179, 8, 0.7);
 }
