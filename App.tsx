@@ -43,9 +43,10 @@ const App: React.FC = () => {
       setEditableScript(result.suggestedFortuneScript);
     } catch (error: any) {
       console.error(error);
-      if (error?.message?.includes("Requested entity was not found.")) {
-        alert("API 키가 올바르지 않거나 프로젝트가 존재하지 않습니다. 키를 다시 선택해주세요.");
-        window.aistudio.openSelectKey();
+      if (error?.message?.includes("Requested entity was not found.") || error?.message?.includes("API 키")) {
+        alert("API 키가 올바르지 않거나 설정되지 않았습니다. API 키를 다시 입력해주세요.");
+      } else {
+        alert(`분석 실패: ${error?.message || '알 수 없는 오류'}`);
       }
       setState(prev => ({ ...prev, isGenerating: false, statusMessage: '분석에 실패했습니다.' }));
     }
@@ -53,28 +54,28 @@ const App: React.FC = () => {
 
   const startVideoGeneration = async () => {
     if (!editableScript) return;
-    setState(prev => ({ 
-      ...prev, 
-      isGenerating: true, 
+    setState(prev => ({
+      ...prev,
+      isGenerating: true,
       step: AppStep.GENERATION,
       videoUrl: null,
-      statusMessage: '12지신이 쏟아지는 우주 영상을 빚어내고 있습니다...' 
+      statusMessage: '12지신이 쏟아지는 우주 영상을 빚어내고 있습니다...'
     }));
     try {
       const videoUrl = await generateFortuneVideo(editableScript);
-      setState(prev => ({ 
-        ...prev, 
-        videoUrl, 
-        isGenerating: false, 
-        statusMessage: '영상 제작 완료!' 
+      setState(prev => ({
+        ...prev,
+        videoUrl,
+        isGenerating: false,
+        statusMessage: '영상 제작 완료!'
       }));
     } catch (error: any) {
       console.error(error);
       alert("영상 생성 모델(Veo)에 접근할 수 없습니다. 반드시 '유료 계정'의 API 키를 사용해야 합니다. ai.google.dev에서 결제 수단이 등록된 프로젝트인지 확인해주세요.");
-      setState(prev => ({ 
-        ...prev, 
-        isGenerating: false, 
-        statusMessage: '생성 실패. 유료 계정 키인지 확인하세요.' 
+      setState(prev => ({
+        ...prev,
+        isGenerating: false,
+        statusMessage: '생성 실패. 유료 계정 키인지 확인하세요.'
       }));
     }
   };
@@ -82,11 +83,11 @@ const App: React.FC = () => {
   const handleTTS = () => {
     if (!editableScript) return;
     window.speechSynthesis.cancel();
-    
+
     const utter = new SpeechSynthesisUtterance(editableScript);
     const voices = window.speechSynthesis.getVoices();
-    const preferredVoice = voices.find(v => 
-      (v.lang === 'ko-KR' || v.lang.startsWith('ko')) && 
+    const preferredVoice = voices.find(v =>
+      (v.lang === 'ko-KR' || v.lang.startsWith('ko')) &&
       (v.name.includes('Google') || v.name.includes('Yuna') || v.name.includes('여성'))
     ) || voices.find(v => v.lang.startsWith('ko'));
 
@@ -94,16 +95,16 @@ const App: React.FC = () => {
     utter.lang = 'ko-KR';
     utter.rate = 1.05;
     utter.pitch = 1.1;
-    
+
     utter.onend = () => {
-      window.confetti({ 
-        particleCount: 200, 
-        spread: 100, 
-        origin: { y: 0.6 }, 
-        colors: ['#FFD700', '#FF4500', '#FFFFFF', '#FFA500'] 
+      window.confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+        colors: ['#FFD700', '#FF4500', '#FFFFFF', '#FFA500']
       });
     };
-    
+
     window.speechSynthesis.speak(utter);
   };
 
@@ -116,11 +117,11 @@ const App: React.FC = () => {
             <h1 className="text-5xl font-black bg-clip-text text-transparent bg-gradient-to-b from-yellow-200 via-yellow-500 to-yellow-800 tracking-tighter">쇼츠 명리 마스터</h1>
             <p className="text-slate-400 font-bold uppercase tracking-[0.4em] text-[10px] opacity-70">Zodiac Fortune Video Backgrounds</p>
           </header>
-          
+
           <div className="glass-panel p-10 rounded-[3.5rem] shadow-[0_50px_100px_rgba(0,0,0,1)] border border-slate-700/50 space-y-10">
-            <ApiKeySelector onKeyValidated={() => {}} />
-            
-            <div 
+            <ApiKeySelector onKeyValidated={() => { }} />
+
+            <div
               onClick={() => fileInputRef.current?.click()}
               className="group relative border-4 border-dashed rounded-[3rem] aspect-[9/16] w-full max-w-[240px] mx-auto overflow-hidden cursor-pointer border-slate-700 hover:border-yellow-500 transition-all duration-700 bg-slate-900/50 shadow-inner"
             >
@@ -139,8 +140,8 @@ const App: React.FC = () => {
               )}
             </div>
             <input type="file" ref={fileInputRef} onChange={handleImageUpload} className="hidden" accept="image/*" />
-            
-            <button 
+
+            <button
               disabled={!state.screenshotBase64 || state.isGenerating}
               onClick={startAnalysis}
               className="w-full py-7 rounded-[2rem] font-black text-2xl bg-gradient-to-r from-yellow-500 via-amber-600 to-yellow-900 text-slate-950 active:scale-95 transition-all shadow-[0_20px_60px_rgba(234,179,8,0.3)] disabled:opacity-30 border border-white/20"
@@ -162,7 +163,7 @@ const App: React.FC = () => {
               <i className="fas fa-times mr-2"></i> 닫기
             </button>
           </div>
-          
+
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
             <div className="lg:col-span-4 space-y-6">
               <div className="glass-panel p-4 rounded-[3.5rem] shadow-2xl overflow-hidden border border-slate-700/50">
@@ -173,17 +174,17 @@ const App: React.FC = () => {
                 <p className="text-slate-400 text-xs font-bold leading-relaxed">{state.analysis.visualStyle}</p>
               </div>
             </div>
-            
+
             <div className="lg:col-span-8 space-y-8">
               <div className="bg-slate-900/80 p-12 rounded-[4rem] border border-yellow-500/20 shadow-[0_50px_100px_rgba(0,0,0,0.6)]">
-                <textarea 
+                <textarea
                   value={editableScript}
                   onChange={(e) => setEditableScript(e.target.value)}
                   className="w-full bg-transparent border-none p-0 text-slate-100 font-bold text-2xl min-h-[500px] outline-none leading-relaxed custom-scrollbar"
                 />
               </div>
-              
-              <button 
+
+              <button
                 onClick={startVideoGeneration}
                 className="w-full py-8 bg-gradient-to-r from-yellow-500 via-amber-600 to-yellow-900 hover:shadow-[0_0_80px_rgba(234,179,8,0.4)] rounded-[2.5rem] font-black text-3xl text-slate-950 shadow-2xl active:scale-[0.98] transition-all"
               >
@@ -220,15 +221,15 @@ const App: React.FC = () => {
                 ) : (
                   <div className="w-full h-full flex flex-col items-center justify-center text-red-500 gap-6 p-10 text-center">
                     <i className="fas fa-exclamation-triangle text-6xl"></i>
-                    <p className="font-black uppercase text-xs leading-loose">API 권한 문제로 영상 생성에 실패했습니다.<br/>유료 계정 키인지 다시 확인해주세요.</p>
+                    <p className="font-black uppercase text-xs leading-loose">API 권한 문제로 영상 생성에 실패했습니다.<br />유료 계정 키인지 다시 확인해주세요.</p>
                     <button onClick={startVideoGeneration} className="mt-4 px-8 py-3 bg-slate-800 text-white rounded-full text-[10px] font-black uppercase hover:bg-slate-700 transition-all">다시 시도</button>
                   </div>
                 )}
               </div>
 
               <div className="grid grid-cols-2 gap-10">
-                <button 
-                  onClick={handleTTS} 
+                <button
+                  onClick={handleTTS}
                   className="py-12 bg-slate-900/90 hover:bg-slate-800 rounded-[4rem] flex flex-col items-center justify-center gap-5 transition-all active:scale-95 shadow-2xl border border-slate-800"
                 >
                   <span className="text-5xl filter drop-shadow-[0_0_15px_rgba(234,179,8,0.6)]">🎙️</span>
@@ -237,9 +238,9 @@ const App: React.FC = () => {
                     <span className="text-slate-500 text-[10px] font-bold">음성 & 폭죽</span>
                   </div>
                 </button>
-                <a 
-                  href={state.videoUrl || '#'} 
-                  download="premium-zodiac-background.mp4" 
+                <a
+                  href={state.videoUrl || '#'}
+                  download="premium-zodiac-background.mp4"
                   className="py-12 bg-gradient-to-br from-yellow-500 via-amber-600 to-yellow-800 hover:scale-105 rounded-[4rem] flex flex-col items-center justify-center gap-5 transition-all active:scale-95 shadow-2xl border border-white/20"
                 >
                   <span className="text-5xl text-white">📥</span>
@@ -249,10 +250,10 @@ const App: React.FC = () => {
                   </div>
                 </a>
               </div>
-              
+
               <footer className="text-center">
                 <p className="text-[12px] text-slate-500 font-bold leading-loose max-w-[400px] mx-auto">
-                  💡 명리학적으로 가장 기운이 좋은 '황금 십이지신' 배경입니다. <br/>
+                  💡 명리학적으로 가장 기운이 좋은 '황금 십이지신' 배경입니다. <br />
                   <b>캡컷(CapCut)</b>에서 위 영상을 불러온 뒤, 생성된 대본을 자막으로 입혀 바이럴 쇼츠를 완성하세요!
                 </p>
               </footer>
@@ -260,7 +261,7 @@ const App: React.FC = () => {
           )}
         </div>
       )}
-      
+
       <style>{`
         .custom-scrollbar::-webkit-scrollbar { width: 10px; }
         .custom-scrollbar::-webkit-scrollbar-track { background: rgba(0,0,0,0.3); border-radius: 10px; }

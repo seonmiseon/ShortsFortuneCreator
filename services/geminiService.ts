@@ -3,9 +3,14 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { ViralAnalysis } from "../types";
 
 export const analyzeViralShorts = async (base64Image: string): Promise<ViralAnalysis> => {
-  // Creating a new GoogleGenAI instance right before the call to ensure the latest API key is used.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
-  
+  // Get API key from window object set by ApiKeySelector
+  const apiKey = (window as any).GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+  if (!apiKey) {
+    throw new Error('API 키가 설정되지 않았습니다. API 키를 먼저 입력해주세요.');
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
   const prompt = `
     당신은 '대한민국 최고의 명리학 권위자'이자 '숏폼 전문 SEO 기획가'입니다. 
     이 쇼츠 스크린샷을 분석하여 다음 요소들을 반드시 '한국어'로 작성해줘:
@@ -55,13 +60,18 @@ export const analyzeViralShorts = async (base64Image: string): Promise<ViralAnal
 };
 
 export const generateFortuneVideo = async (script: string, aspectRatio: '9:16' = '9:16') => {
-  // Creating a new GoogleGenAI instance right before making an API call for Veo models.
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY as string });
-  
+  // Get API key from window object set by ApiKeySelector
+  const apiKey = (window as any).GEMINI_API_KEY || localStorage.getItem('GEMINI_API_KEY');
+  if (!apiKey) {
+    throw new Error('API 키가 설정되지 않았습니다. API 키를 먼저 입력해주세요.');
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
+
   const scriptClean = script.replace(/\s/g, '');
   const isPig = scriptClean.includes('돼지') || scriptClean.includes('돈돼지') || scriptClean.includes('복돼지');
-  const focalObject = isPig 
-    ? "a massive, glowing Golden Fortune Pig statue at the bottom center" 
+  const focalObject = isPig
+    ? "a massive, glowing Golden Fortune Pig statue at the bottom center"
     : "a majestic, ruby-eyed Golden Fortune Toad statue at the bottom center";
 
   const videoPrompt = `
@@ -92,11 +102,11 @@ export const generateFortuneVideo = async (script: string, aspectRatio: '9:16' =
 
     const downloadLink = operation.response?.generatedVideos?.[0]?.video?.uri;
     if (!downloadLink) throw new Error("Video URI not found. Check quota or safety filters.");
-    
+
     // Appending API key when fetching from the download link as required by the Veo API.
-    const videoFetch = await fetch(`${downloadLink}&key=${process.env.API_KEY}`);
+    const videoFetch = await fetch(`${downloadLink}&key=${apiKey}`);
     if (!videoFetch.ok) throw new Error("Failed to fetch video file from Google server.");
-    
+
     const blob = await videoFetch.blob();
     return URL.createObjectURL(blob);
   } catch (error) {
