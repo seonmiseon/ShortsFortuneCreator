@@ -1,0 +1,8 @@
+{
+  "name": "쇼츠 운세 동영상 생성기 (Shorts Fortune Creator)",
+  "description": "벤치마킹할 쇼츠 이미지를 분석하여 바이럴 요소를 파악하고, AI를 통해 고퀄리티 운세 숏폼 동영상을 생성합니다.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
